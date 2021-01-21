@@ -1,0 +1,25 @@
+
+language: java
+jdk:
+  - openjdk14
+
+sudo: false
+
+services:
+  - postgresql
+
+before_install:
+  - psql -c 'create database car_accident;' -U postgres
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      a.s.kirson@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
+    env:
+      global:
+        - CODECOV_TOKEN=""
