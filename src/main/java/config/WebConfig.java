@@ -12,9 +12,9 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig {
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+        final InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setViewClass(JstlView.class);
-        bean.setPrefix("./WEB-INF/views/");
+        bean.setPrefix("/WEB-INF/views/");
         bean.setSuffix(".jsp");
         return bean;
     }
