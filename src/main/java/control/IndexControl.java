@@ -16,7 +16,7 @@ public class IndexControl {
         str.add("Jhon");
         str.add("Albert");
         str.add("Leonard");
-        model.addAttribute(str);
+        model.addAttribute("str", str);
         return "index";
     }
 }

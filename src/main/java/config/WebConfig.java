@@ -8,7 +8,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
-@ComponentScan("config")
+@ComponentScan("control")
 public class WebConfig {
     @Bean
     public ViewResolver viewResolver() {

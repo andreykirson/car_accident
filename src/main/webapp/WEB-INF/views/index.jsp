@@ -3,10 +3,9 @@
 
 <html>
 <head>
-    <title>Accident</title>
+    <title>Car accident</title>
 </head>
 <body>
-Hello : ${user}
 
 <table class="table">
     <thead>
