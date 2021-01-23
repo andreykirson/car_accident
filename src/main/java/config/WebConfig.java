@@ -7,6 +7,13 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+/**
+ * @author
+ * @version 1
+ * @since 23/01/21
+ */
+
+
 @Configuration
 @ComponentScan("control")
 public class WebConfig {

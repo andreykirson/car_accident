@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<a href="<c:url value='/create'/>">Add accident</a>
+
 <table class="table">
     <thead>
     <tr>
@@ -21,9 +23,14 @@
     <c:forEach items="${accidents}" var="accident">
         <tr>
             <td>
-                <c:out value="${accident}"/>
+                <c:out value="${accident.name}"/>
             </td>
-
+            <td>
+                <c:out value="${accident.address}"/>
+            </td>
+            <td>
+                <c:out value="${accident.text}"/>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
