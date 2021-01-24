@@ -4,6 +4,7 @@ import model.Accident;
 import org.springframework.stereotype.Service;
 import repository.AccidentMem;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author
@@ -15,14 +16,20 @@ import java.util.Collection;
 @Service
 public class AccidentService {
 
-    AccidentMem accidentMem = new AccidentMem();
+    private final AccidentMem accidentMem;
 
-    public void addAccident(Accident accident) {
-        this.accidentMem.addAccident(accident.getId(), accident);
+    public AccidentService(AccidentMem accidentMem) {
+        this.accidentMem = accidentMem;
     }
 
     public Accident getAccident(Integer id) {
         return accidentMem.getAccident(id);
+    }
+
+    public void saveAccident(Accident accident) {
+        Integer newId = Collections.max(accidentMem.getKeys()) + 1;
+        accident.setId(newId);
+        this.accidentMem.addAccident(accident.getId(), accident);
     }
 
     public Collection<Accident> getAll() {

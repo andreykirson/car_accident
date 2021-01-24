@@ -3,7 +3,10 @@ package repository;
 import model.Accident;
 import org.springframework.stereotype.Repository;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author
@@ -15,8 +18,7 @@ import java.util.HashMap;
 @Repository
 public class AccidentMem {
 
-    private HashMap<Integer, Accident> accidents = new HashMap<>();
-
+    private final Map<Integer, Accident> accidents = new ConcurrentHashMap<>();
 
     public AccidentMem() {
         Accident accidentOne = new Accident();
@@ -41,8 +43,14 @@ public class AccidentMem {
         return this.accidents.get(id);
     }
 
+    public Set<Integer> getKeys() {
+        return accidents.keySet();
+    }
+
     public Collection<Accident> getAll() {
         return this.accidents.values();
     }
+
+
 
 }
