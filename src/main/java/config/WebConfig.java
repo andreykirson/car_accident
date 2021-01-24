@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 
 @Configuration
-@ComponentScan("control")
+@ComponentScan(value = {"control", "model", "repository", "service"})
 public class WebConfig {
     @Bean
     public ViewResolver viewResolver() {

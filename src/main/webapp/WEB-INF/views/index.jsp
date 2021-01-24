@@ -24,6 +24,10 @@
         <tr>
             <td>
                 <c:out value="${accident.name}"/>
+                </span>
+                <span>
+             <a href="<c:url value='/update?id=${accident.id}'/>">Edit accident</a>
+        </span>
             </td>
             <td>
                 <c:out value="${accident.address}"/>

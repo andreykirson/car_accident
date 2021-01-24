@@ -35,7 +35,10 @@ public class AccidentMem {
         accidents.put(accidentTwo.getId(), accidentTwo);
     }
 
-    public void addAccident(Integer id, Accident accident) {
+    public void addOrUpdateAccident(Integer id, Accident accident) {
+        if (this.accidents.containsKey(id)) {
+            this.accidents.replace(id, accident);
+        }
         this.accidents.put(id, accident);
     }
 

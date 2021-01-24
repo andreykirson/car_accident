@@ -27,9 +27,12 @@ public class AccidentService {
     }
 
     public void saveAccident(Accident accident) {
-        Integer newId = Collections.max(accidentMem.getKeys()) + 1;
-        accident.setId(newId);
-        this.accidentMem.addAccident(accident.getId(), accident);
+        Integer rs = accident.getId();
+        if (rs == null) {
+            Integer newId = Collections.max(accidentMem.getKeys()) + 1;
+            accident.setId(newId);
+        }
+        this.accidentMem.addOrUpdateAccident(accident.getId(), accident);
     }
 
     public Collection<Accident> getAll() {
