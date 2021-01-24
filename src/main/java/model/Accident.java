@@ -1,15 +1,17 @@
 package model;
 
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
+@Entity
+@Table(name = "accident")
 public class Accident {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
-    private String text;
-    private String address;
-    private AccidentType type;
-    private Set<Rule> rules;
 
     public int getId() {
         return id;
@@ -27,22 +29,6 @@ public class Accident {
         this.name = name;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -52,23 +38,12 @@ public class Accident {
             return false;
         }
         Accident accident = (Accident) o;
-        return Objects.equals(name, accident.name)
-                && Objects.equals(text, accident.text)
-                && Objects.equals(address, accident.address);
+        return id == accident.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, text, address);
+        return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Accident{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", text='" + text + '\''
-                + ", address='" + address + '\''
-                + '}';
-    }
 }

@@ -3,7 +3,7 @@ package control;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import repository.AccidentJdbcTemplate;
+import repository.AccidentHibernate;
 
 /**
  * @author
@@ -15,9 +15,9 @@ import repository.AccidentJdbcTemplate;
 @Controller
 public class IndexControl {
 
-    private final AccidentJdbcTemplate accidents;
+    private final AccidentHibernate accidents;
 
-    public IndexControl(AccidentJdbcTemplate accidents) {
+    public IndexControl(AccidentHibernate accidents) {
         this.accidents = accidents;
     }
 
