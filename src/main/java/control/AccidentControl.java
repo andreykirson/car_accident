@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import repository.AccidentMem;
 import service.AccidentService;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,8 @@ public class AccidentControl {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute Accident accident) {
+    public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
+        String[] ids = req.getParameterValues("rIds");
         accidentService.saveAccident(accident);
         return "redirect:/";
     }
@@ -50,11 +53,5 @@ public class AccidentControl {
         model.addAttribute("accident", accidentService.getAccident(id));
         return "accident/update";
     }
-//
-//    @GetMapping("/")
-//    public String index(Model model) {
-//        model.addAttribute("accidents", accidentService.getAll());
-//        return "index";
-//    }
 
 }
