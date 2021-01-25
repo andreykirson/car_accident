@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import repository.AccidentMem;
 import service.AccidentService;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -28,23 +27,23 @@ public class AccidentControl {
 
     @GetMapping("/create")
     public String create(Model model) {
-        List<AccidentType> types = new ArrayList<>();
-        types.add(AccidentType.of(1, "Две машины"));
-        types.add(AccidentType.of(2, "Машина и человек"));
-        types.add(AccidentType.of(3, "Машина и велосипед"));
+
+        Collection<AccidentType> types = accidentService.getAllAccidentType();
         model.addAttribute("types", types);
-        List<Rule> rules = new ArrayList<>();
-        rules.add(Rule.of(1, "Статья. 1"));
-        rules.add(Rule.of(2, "Статья. 2"));
-        rules.add(Rule.of(3, "Статья. 3"));
+
+        Collection<Rule> rules = accidentService.getAllRule();
         model.addAttribute("rules", rules);
+
         return "accident/create";
     }
 
     @PostMapping("/save")
     public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
-        String[] ids = req.getParameterValues("rIds");
-        accidentService.saveAccident(accident);
+        int ruleId = Integer.parseInt(req.getParameter("rIds"));
+        int typeId = Integer.parseInt(req.getParameter("type.id"));
+        Rule rule = accidentService.getRuleById(ruleId);
+        AccidentType type = accidentService.getAccidentTypeById(typeId);
+        accidentService.saveAccident(accident, type, rule);
         return "redirect:/";
     }
 

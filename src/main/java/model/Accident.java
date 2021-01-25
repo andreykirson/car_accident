@@ -13,6 +13,26 @@ public class Accident {
 
     private String address;
 
+    private AccidentType accidentType;
+
+    private Rule rule;
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
+    }
+
+    public AccidentType getAccidentType() {
+        return accidentType;
+    }
+
+    public void setAccidentType(AccidentType accidentType) {
+        this.accidentType = accidentType;
+    }
+
     public int getId() {
         return id;
     }
