@@ -1,17 +1,17 @@
 package model;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "accident")
+
 public class Accident {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
+
+    private String text;
+
+    private String address;
 
     public int getId() {
         return id;
@@ -27,6 +27,22 @@ public class Accident {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

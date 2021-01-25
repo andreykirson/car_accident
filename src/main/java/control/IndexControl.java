@@ -1,14 +1,9 @@
 package control;
 
-import model.Accident;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import repository.AccidentHibernate;
-import repository.AccidentRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+import service.AccidentService;
 
 /**
  * @author Andrey
@@ -20,17 +15,15 @@ import java.util.List;
 @Controller
 public class IndexControl {
 
-    private final AccidentRepository accidents;
+    private final AccidentService accidentService;
 
-    public IndexControl(AccidentRepository accidents) {
-        this.accidents = accidents;
+    public IndexControl(AccidentService accidentService) {
+        this.accidentService = accidentService;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Accident> res = new ArrayList<>();
-        accidents.findAll().forEach(res::add);
-        model.addAttribute("accidents", res);
+        model.addAttribute("accidents", accidentService.getAll());
         return "index";
     }
 }
