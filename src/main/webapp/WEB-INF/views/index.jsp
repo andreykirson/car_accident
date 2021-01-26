@@ -17,6 +17,8 @@
         <th scope="col">Name</th>
         <th scope="col">Address</th>
         <th scope="col">Description</th>
+        <th scope="col">Rules</th>
+        <th scope="col">Item</th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +37,13 @@
             <td>
                 <c:out value="${accident.text}"/>
             </td>
+            <td>
+                <c:out value="${accident.rule.name}"/>
+            </td>
+            <td>
+                <c:out value="${accident.accidentType.name}"/>
+            </td>
+
         </tr>
     </c:forEach>
     </tbody>

@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.AccidentService;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 
 @Controller
 public class AccidentControl {
@@ -49,7 +46,15 @@ public class AccidentControl {
 
     @GetMapping("/update")
     public String update(@RequestParam("id") int id, Model model) {
+
+        Collection<AccidentType> types = accidentService.getAllAccidentType();
+        model.addAttribute("types", types);
+
+        Collection<Rule> rules = accidentService.getAllRule();
+        model.addAttribute("rules", rules);
+
         model.addAttribute("accident", accidentService.getAccident(id));
+
         return "accident/update";
     }
 

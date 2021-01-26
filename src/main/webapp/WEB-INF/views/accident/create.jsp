@@ -5,9 +5,20 @@
 <form  action="<c:url value='/save'/>" method='POST'>
     <table>
         <tr>
-            <td>Название:</td>
+            <td>Name:</td>
             <td><input type='text' name='name'></td>
         </tr>
+
+        <tr>
+            <td>Address:</td>
+            <td><input type='text' name='address'></td>
+        </tr>
+
+        <tr>
+            <td>Description:</td>
+            <td><input type='text' name='text'></td>
+        </tr>
+
 
         <tr>
             <select name="type.id">
