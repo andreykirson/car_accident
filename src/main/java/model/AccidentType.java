@@ -3,15 +3,15 @@ package model;
 import java.util.Objects;
 
 /**
- * @author
+ * @author Andrey
  * @version 1
- * @since
+ * @since 26/1/21
  */
 
 public class AccidentType {
 
-    private String name;
     private int id;
+    private String name;
 
     public static AccidentType of(int id, String name) {
         AccidentType type = new AccidentType();

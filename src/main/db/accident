@@ -1,4 +1,10 @@
 CREATE TABLE accident (
   id serial primary key,
-  name varchar(2000)
+  name varchar(2000),
+  text varchar(2000),
+  address varchar(2000),
+  type_id int,
+  rule_id int,
+  FOREIGN KEY (type_id) REFERENCES types(id) ON DELETE CASCADE,
+  FOREIGN KEY (rule_id) REFERENCES rules(id) ON DELETE CASCADE
 );

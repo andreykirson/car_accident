@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import service.AccidentService;
+import repository.JDBCStore;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class AccidentControl {
 
-    private final AccidentService accidentService;
+    private final JDBCStore jdbcStore;
 
-    public AccidentControl(AccidentService accidentService) {
-        this.accidentService = accidentService;
+    public AccidentControl(JDBCStore jdbcStore) {
+        this.jdbcStore = jdbcStore;
     }
 
     @GetMapping("/create")
     public String create(Model model) {
 
-        Collection<AccidentType> types = accidentService.getAllAccidentType();
+        List<AccidentType> types = jdbcStore.getAllAccidentTypes();
         model.addAttribute("types", types);
 
-        Collection<Rule> rules = accidentService.getAllRule();
+        List<Rule> rules = jdbcStore.getAllRules();
         model.addAttribute("rules", rules);
 
         return "accident/create";
@@ -38,22 +38,24 @@ public class AccidentControl {
     public String save(@ModelAttribute Accident accident, HttpServletRequest req) {
         int ruleId = Integer.parseInt(req.getParameter("rIds"));
         int typeId = Integer.parseInt(req.getParameter("type.id"));
-        Rule rule = accidentService.getRuleById(ruleId);
-        AccidentType type = accidentService.getAccidentTypeById(typeId);
-        accidentService.saveAccident(accident, type, rule);
+        Rule rule = jdbcStore.findRuleById(ruleId);
+        AccidentType accidentType = jdbcStore.findAccidentTypeById(typeId);
+        accident.setRule(rule);
+        accident.setAccidentType(accidentType);
+        jdbcStore.addAccident(accident);
         return "redirect:/";
     }
 
     @GetMapping("/update")
     public String update(@RequestParam("id") int id, Model model) {
 
-        Collection<AccidentType> types = accidentService.getAllAccidentType();
+        List<AccidentType> types = jdbcStore.getAllAccidentTypes();
         model.addAttribute("types", types);
 
-        Collection<Rule> rules = accidentService.getAllRule();
+        List<Rule> rules = jdbcStore.getAllRules();
         model.addAttribute("rules", rules);
 
-        model.addAttribute("accident", accidentService.getAccident(id));
+        model.addAttribute("accident", jdbcStore.findAccidentById(id));
 
         return "accident/update";
     }
