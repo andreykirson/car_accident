@@ -7,13 +7,13 @@
     <table>
         <tr>
             <td>Name:</td>
-            <td><input type='text' name='name' value="${accident.accidentName} + ${accident.accidentId}"></td>
+            <td><input type='text' name='accidentName' value="${accident.accidentName}"></td>
         </tr>
         <tr>
             <td>Description:</td>
-            <td><input type='text' name='text' value="${accident.accidentText}"></td>
+            <td><input type='text' name='accidentText' value="${accident.accidentText}"></td>
             <td>Address:</td>
-            <td><input type='text' name='name' value="${accident.accidentAddress}"></td>
+            <td><input type='text' name='accidentAddress' value="${accident.accidentAddress}"></td>
         </tr>
 
         <td>Type:</td>

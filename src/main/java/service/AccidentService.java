@@ -5,7 +5,6 @@ import model.AccidentType;
 import model.Rule;
 import org.springframework.stereotype.Service;
 import repository.AccidentMem;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,13 +32,10 @@ public class AccidentService {
 
     public void saveAccident(Accident accident, List<Rule> rules, AccidentType type) {
         Integer rs = accident.getAccidentId();
-        System.out.println("Getting accident id is : " + rs);
         if (rs == 0) {
-            System.out.println("The Id of edited accident is:  " + rs);
             Integer newId = Collections.max(accidentMem.getKeys()) + 1;
             accident.setAccidentId(newId);
         }
-        System.out.println("After checking id is:  " + rs);
         this.accidentMem.addOrUpdateAccident(accident.getAccidentId(), accident, type, rules);
     }
 

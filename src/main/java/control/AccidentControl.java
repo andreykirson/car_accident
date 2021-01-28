@@ -44,18 +44,12 @@ public class AccidentControl {
 
     @GetMapping("/update")
     public String update(@RequestParam("id") String id, Model model) {
-
         Collection<AccidentType> types = accidentService.getAllAccidentType();
         model.addAttribute("types", types);
-
         Collection<Rule> rules = accidentService.getAllRule();
         model.addAttribute("rules", rules);
-
         Accident accident = accidentService.getAccident(id);
-        System.out.println("In updating request accident id is :" + accident.getAccidentId());
         model.addAttribute("accident", accident);
-
-
         return "accident/update";
     }
 
