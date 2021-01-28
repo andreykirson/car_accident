@@ -27,17 +27,17 @@ public class AccidentMem {
 
     public AccidentMem() {
         Accident accidentOne = new Accident();
-        accidentOne.setId(1);
-        accidentOne.setAddress("Baker Street 221 b");
-        accidentOne.setName("Car accident");
-        accidentOne.setText("too hard");
+        accidentOne.setAccidentId(1);
+        accidentOne.setAccidentAddress("Baker Street 221 b");
+        accidentOne.setAccidentName("Car accident");
+        accidentOne.setAccidentText("too hard");
         Accident accidentTwo = new Accident();
-        accidentTwo.setId(2);
-        accidentTwo.setAddress("Beverly Hills 111");
-        accidentTwo.setName("Motor cycle accident");
-        accidentTwo.setText("light");
-        accidents.put(accidentOne.getId(), accidentOne);
-        accidents.put(accidentTwo.getId(), accidentTwo);
+        accidentTwo.setAccidentId(2);
+        accidentTwo.setAccidentAddress("Beverly Hills 111");
+        accidentTwo.setAccidentName("Motor cycle accident");
+        accidentTwo.setAccidentText("light");
+        accidents.put(accidentOne.getAccidentId(), accidentOne);
+        accidents.put(accidentTwo.getAccidentId(), accidentTwo);
 
         types.put(1, AccidentType.of(1, "Две машины"));
         types.put(2, AccidentType.of(2, "Машина и человек"));
@@ -48,8 +48,8 @@ public class AccidentMem {
         rules.put(3, Rule.of(3, "Статья. 3"));
     }
 
-    public void addOrUpdateAccident(Integer id, Accident accident, AccidentType accidentType, Rule rule) {
-        accident.setRule(rule);
+    public void addOrUpdateAccident(Integer id, Accident accident, AccidentType accidentType, List<Rule> rules) {
+        accident.setRules(rules);
         accident.setAccidentType(accidentType);
         if (this.accidents.containsKey(id)) {
             this.accidents.replace(id, accident);
@@ -81,7 +81,11 @@ public class AccidentMem {
         return this.rules.values();
     }
 
-    public Rule getRuleById(int id) {
-        return rules.get(id);
+    public List<Rule> getRulesByIds(int[] id) {
+        List<Rule> newRules = new ArrayList<>();
+        for (int i = 0; i < id.length; i++) {
+            newRules.add(rules.get(id[i]));
+        }
+        return newRules;
     }
 }

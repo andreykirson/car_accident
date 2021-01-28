@@ -10,22 +10,22 @@ import java.util.Objects;
 
 public class Rule {
 
-    private int id;
+    private int ruleId;
     private String name;
 
     public static Rule of(int id, String name) {
         Rule rule = new Rule();
-        rule.id = id;
+        rule.ruleId = id;
         rule.name = name;
         return rule;
     }
 
-    public int getId() {
-        return id;
+    public int getRuleId() {
+        return ruleId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRuleId(int ruleId) {
+        this.ruleId = ruleId;
     }
 
     public String getName() {
@@ -45,11 +45,11 @@ public class Rule {
             return false;
         }
         Rule rule = (Rule) o;
-        return id == rule.id;
+        return ruleId == rule.ruleId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(ruleId);
     }
 }

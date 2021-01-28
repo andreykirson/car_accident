@@ -1,4 +1,0 @@
-CREATE TABLE types (
-  id serial primary key,
-  name varchar(2000)
-);

@@ -1,4 +1,0 @@
-CREATE TABLE rules (
-  id serial primary key,
-  name varchar(2000)
-);

@@ -1,28 +1,29 @@
 package model;
 
+import java.util.List;
 import java.util.Objects;
 
 
 public class Accident {
 
-    private int id;
+    private int accidentId;
 
-    private String name;
+    private String accidentName;
 
-    private String text;
+    private String accidentText;
 
-    private String address;
+    private String accidentAddress;
 
     private AccidentType accidentType;
 
-    private Rule rule;
+    private List<Rule> rules;
 
-    public Rule getRule() {
-        return rule;
+    public List<Rule> getRules() {
+        return rules;
     }
 
-    public void setRule(Rule rule) {
-        this.rule = rule;
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
     }
 
     public AccidentType getAccidentType() {
@@ -33,36 +34,36 @@ public class Accident {
         this.accidentType = accidentType;
     }
 
-    public int getId() {
-        return id;
+    public int getAccidentId() {
+        return accidentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAccidentId(int accidentId) {
+        this.accidentId = accidentId;
     }
 
-    public String getName() {
-        return name;
+    public String getAccidentName() {
+        return accidentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccidentName(String accidentName) {
+        this.accidentName = accidentName;
     }
 
-    public String getText() {
-        return text;
+    public String getAccidentText() {
+        return accidentText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setAccidentText(String accidentText) {
+        this.accidentText = accidentText;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAccidentAddress() {
+        return accidentAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAccidentAddress(String accidentAddress) {
+        this.accidentAddress = accidentAddress;
     }
 
     @Override
@@ -74,12 +75,12 @@ public class Accident {
             return false;
         }
         Accident accident = (Accident) o;
-        return id == accident.id;
+        return accidentId == accident.accidentId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(accidentId);
     }
 
 }

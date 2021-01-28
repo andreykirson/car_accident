@@ -25,23 +25,26 @@
     <c:forEach items="${accidents}" var="accident">
         <tr>
             <td>
-                <c:out value="${accident.name}"/>
-                </span>
-                <span>
-             <a href="<c:url value='/update?id=${accident.id}'/>">Edit accident</a>
+                <c:out value="${accident.accidentName}"/>
+        <span>
+             <a href="<c:url value='/update?id=${accident.accidentId}'/>">Edit accident</a>
         </span>
             </td>
             <td>
-                <c:out value="${accident.address}"/>
+                <c:out value="${accident.accidentAddress}"/>
             </td>
             <td>
-                <c:out value="${accident.text}"/>
+                <c:out value="${accident.accidentText}"/>
             </td>
+
             <td>
-                <c:out value="${accident.rule.name}"/>
+                <c:forEach items="${accident.rules}" var="rule">
+                    <c:out value="${rule.name}"/>
+                </c:forEach>
             </td>
+
             <td>
-                <c:out value="${accident.accidentType.name}"/>
+                <c:out value="${accident.accidentType.typeName}"/>
             </td>
 
         </tr>

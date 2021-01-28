@@ -5,6 +5,8 @@ import model.AccidentType;
 import model.Rule;
 import org.springframework.stereotype.Service;
 import repository.AccidentMem;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -25,18 +27,20 @@ public class AccidentService {
         this.accidentMem = accidentMem;
     }
 
-    public Accident getAccident(Integer id) {
-        return accidentMem.getAccident(id);
+    public Accident getAccident(String id) {
+        return accidentMem.getAccident(Integer.parseInt(id));
     }
 
-    public void saveAccident(Accident accident, AccidentType accidentType, Rule rule) {
-        Integer rs = accident.getId();
-        if (rs == null) {
+    public void saveAccident(Accident accident, List<Rule> rules, AccidentType type) {
+        Integer rs = accident.getAccidentId();
+        System.out.println("Getting accident id is : " + rs);
+        if (rs == 0) {
+            System.out.println("The Id of edited accident is:  " + rs);
             Integer newId = Collections.max(accidentMem.getKeys()) + 1;
-            accident.setId(newId);
+            accident.setAccidentId(newId);
         }
-
-        this.accidentMem.addOrUpdateAccident(accident.getId(), accident, accidentType, rule);
+        System.out.println("After checking id is:  " + rs);
+        this.accidentMem.addOrUpdateAccident(accident.getAccidentId(), accident, type, rules);
     }
 
     public Collection<Accident> getAll() {
@@ -51,12 +55,13 @@ public class AccidentService {
         return accidentMem.getAllRule();
     }
 
-    public AccidentType getAccidentTypeById(int id) {
-        return accidentMem.getAccidentTypeById(id);
+    public AccidentType getAccidentTypeById(String id) {
+        return accidentMem.getAccidentTypeById(Integer.parseInt(id));
     }
 
-    public Rule getRuleById(int id) {
-        return accidentMem.getRuleById(id);
+    public List<Rule> getRulesByIds(String[] ids) {
+        int[] numbers = Arrays.stream(ids).mapToInt(Integer::parseInt).toArray();
+        return accidentMem.getRulesByIds(numbers);
     }
 
 }

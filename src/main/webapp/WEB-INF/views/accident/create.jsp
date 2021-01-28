@@ -6,24 +6,24 @@
     <table>
         <tr>
             <td>Name:</td>
-            <td><input type='text' name='name'></td>
+            <td><input type='text' name='accidentName'></td>
         </tr>
 
         <tr>
             <td>Address:</td>
-            <td><input type='text' name='address'></td>
+            <td><input type='text' name='accidentAddress'></td>
         </tr>
 
         <tr>
             <td>Description:</td>
-            <td><input type='text' name='text'></td>
+            <td><input type='text' name='accidentText'></td>
         </tr>
 
 
         <tr>
             <select name="type.id">
                 <c:forEach var="type" items="${types}" >
-                    <option value="${type.id}">${type.name}</option>
+                    <option value="${type.typeId}">${type.typeName}</option>
                 </c:forEach>
             </select>
         </tr>
@@ -33,7 +33,7 @@
             <td>
                 <select name="rIds" multiple>
                     <c:forEach var="rule" items="${rules}" >
-                        <option value="${rule.id}">${rule.name}</option>
+                        <option value="${rule.ruleId}">${rule.name}</option>
                     </c:forEach>
                 </select>
         </tr>

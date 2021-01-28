@@ -10,30 +10,30 @@ import java.util.Objects;
 
 public class AccidentType {
 
-    private int id;
-    private String name;
+    private int typeId;
+    private String typeName;
 
     public static AccidentType of(int id, String name) {
         AccidentType type = new AccidentType();
-        type.id = id;
-        type.name = name;
+        type.typeId = id;
+        type.typeName = name;
         return type;
     }
 
-    public int getId() {
-        return id;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
-    public String getName() {
-        return name;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class AccidentType {
             return false;
         }
         AccidentType that = (AccidentType) o;
-        return id == that.id;
+        return typeId == that.typeId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(typeId);
     }
 }

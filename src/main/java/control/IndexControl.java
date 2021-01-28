@@ -3,7 +3,7 @@ package control;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import repository.JDBCStore;
+import service.AccidentService;
 
 /**
  * @author Andrey
@@ -14,15 +14,16 @@ import repository.JDBCStore;
 @Controller
 public class IndexControl {
 
-    private final JDBCStore jdbcStore;
+    private AccidentService accidentService;
 
-    public IndexControl(JDBCStore jdbcStore) {
-        this.jdbcStore = jdbcStore;
+    public IndexControl(AccidentService accidentService) {
+        this.accidentService = accidentService;
     }
+
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accidents", jdbcStore.getAllAccidents());
+        model.addAttribute("accidents", accidentService.getAll());
         return "index";
     }
 }

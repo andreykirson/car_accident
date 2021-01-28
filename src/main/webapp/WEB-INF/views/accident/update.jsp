@@ -2,24 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <body>
-<form action="<c:url value='/save?id=${accident.id}'/>" method='POST'>
+
+<form action="<c:url value='/save?id=${accident.getAccidentId()}'/>" method='POST'>
     <table>
         <tr>
             <td>Name:</td>
-            <td><input type='text' name='name' value="${accident.name}"></td>
+            <td><input type='text' name='name' value="${accident.accidentName} + ${accident.accidentId}"></td>
         </tr>
         <tr>
             <td>Description:</td>
-            <td><input type='text' name='text' value="${accident.text}"></td>
+            <td><input type='text' name='text' value="${accident.accidentText}"></td>
             <td>Address:</td>
-            <td><input type='text' name='name' value="${accident.address}"></td>
+            <td><input type='text' name='name' value="${accident.accidentAddress}"></td>
         </tr>
 
         <td>Type:</td>
         <tr>
             <select name="type.id">
                 <c:forEach var="type" items="${types}" >
-                    <option value="${type.id}">${type.name}</option>
+                    <option value="${type.typeId}">${type.typeName}</option>
                 </c:forEach>
             </select>
         </tr>
@@ -29,7 +30,7 @@
             <td>
                 <select name="rIds" multiple>
                     <c:forEach var="rule" items="${rules}" >
-                        <option value="${rule.id}">${rule.name}</option>
+                        <option value="${rule.ruleId}">${rule.name}</option>
                     </c:forEach>
                 </select>
         </tr>
