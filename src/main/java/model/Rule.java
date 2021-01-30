@@ -11,13 +11,15 @@ import java.util.Objects;
 public class Rule {
 
     private int ruleId;
-    private String name;
+    private String ruleName;
 
-    public static Rule of(int id, String name) {
-        Rule rule = new Rule();
-        rule.ruleId = id;
-        rule.name = name;
-        return rule;
+    public Rule() {
+
+    }
+
+    public Rule(int id, String name) {
+        ruleId = id;
+        ruleName = name;
     }
 
     public int getRuleId() {
@@ -28,12 +30,12 @@ public class Rule {
         this.ruleId = ruleId;
     }
 
-    public String getName() {
-        return name;
+    public String getRuleName() {
+        return ruleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
     @Override

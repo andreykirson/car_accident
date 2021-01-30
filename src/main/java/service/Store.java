@@ -1,6 +1,8 @@
 package service;
 
 import model.Accident;
+import model.AccidentType;
+import model.Rule;
 import java.util.List;
 
 /**
@@ -10,8 +12,14 @@ import java.util.List;
  */
 
 public interface Store {
-   void addAccident(Accident accident);
-   void updateAccident(Accident accident);
+   void addAccident(Accident accident, List<Rule> rules, AccidentType accidentType);
+   void updateAccident(Accident accident, List<Rule> rules, AccidentType accidentType);
    List<Accident> getAllAccidents();
-   Accident findAccidentById(int id);
+   Accident findAccidentById(String id);
+   List<Rule> getRulesByAccidentId(int id);
+   AccidentType getAccidentTypeByAccidentId(int id);
+   List<Rule> getAllRules();
+   List<AccidentType> getAllAccidentType();
+   List<Rule> getAllRulesByIds(String[] ids);
+   AccidentType getAccidentTypeById(String id);
 }

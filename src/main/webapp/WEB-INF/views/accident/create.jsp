@@ -33,7 +33,7 @@
             <td>
                 <select name="rIds" multiple>
                     <c:forEach var="rule" items="${rules}" >
-                        <option value="${rule.ruleId}">${rule.name}</option>
+                        <option value="${rule.ruleId}">${rule.ruleName}</option>
                     </c:forEach>
                 </select>
         </tr>

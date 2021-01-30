@@ -39,7 +39,7 @@
 
             <td>
                 <c:forEach items="${accident.rules}" var="rule">
-                    <c:out value="${rule.name}"/>
+                    <c:out value="${rule.ruleName}"/>
                 </c:forEach>
             </td>
 

@@ -1,11 +1,25 @@
 package repository;
 
 import model.Accident;
+import model.AccidentType;
+import model.Rule;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import service.Store;
+
+import javax.sound.midi.Soundbank;
+import java.sql.PreparedStatement;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author
@@ -23,31 +37,115 @@ public class JDBCStore implements Store {
     }
 
     @Override
-    public void addAccident(Accident accident) {
-        if ((Integer) accident.getAccidentId() != null) {
-            updateAccident(accident);
+    public void addAccident(Accident accident, List<Rule> rules, AccidentType accidentType) {
+        if (accident.getAccidentId() != 0) {
+            updateAccident(accident, rules, accidentType);
+        } else {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement("INSERT INTO accident (accidentname, accidenttext, accidentaddress)  VALUES(?,?,?)",
+                        new String[] {"accidentid"});
+                ps.setString(1, accident.getAccidentName());
+                ps.setString(2, accident.getAccidentText());
+                ps.setString(3, accident.getAccidentAddress());
+                return ps;
+            }, keyHolder);
+
+            for (Rule r:rules) {
+                jdbcTemplate.update("INSERT INTO accident_rule (accident_id, rule_id)  VALUES(?, ?)",
+                        keyHolder.getKey(), r.getRuleId());
+            }
+
+            jdbcTemplate.update("INSERT INTO accident_type (accident_id, type_id)  VALUES(?, ?)",
+                    keyHolder.getKey(), accidentType.getTypeId());
         }
 
-        jdbcTemplate.update("INSERT INTO accident (accidentName, accidentText, accidentAddress)  VALUES(?,?,?)",
-                accident.getAccidentName(), accident.getAccidentText(), accident.getAccidentAddress());
     }
 
     @Override
-    public void updateAccident(Accident accident) {
-        jdbcTemplate.update("UPDATE accident SET accidentName=?, accidentText=?, accidentAddress=? WHERE id=?",
-                accident.getAccidentName(), accident.getAccidentText(), accident.getAccidentAddress());
+    public void updateAccident(Accident accident, List<Rule> rules, AccidentType accidentType) {
+        jdbcTemplate.update("UPDATE accident SET accidentName=?, accidentText=?, accidentAddress=? WHERE accidentId=?",
+                accident.getAccidentName(), accident.getAccidentText(), accident.getAccidentAddress(), accident.getAccidentId());
+
+        for (Rule r:rules) {
+            jdbcTemplate.update("INSERT INTO accident_rule (rule_id, accident_id)  VALUES(?,?) "
+                          + " ON CONFLICT (rule_id, accident_id) DO UPDATE SET rule_id=? ",
+                    r.getRuleId(), accident.getAccidentId(), r.getRuleId());
+        }
+
+        jdbcTemplate.update("UPDATE accident_type SET type_id =? WHERE accident_id=?",
+                accident.getAccidentId(), accidentType.getTypeId());
+
     }
 
     @Override
     public List<Accident> getAllAccidents() {
-       return jdbcTemplate.query("SELECT accident.accidentId, accident.accidentName, accident.accidentText, accident.accidentAddress FROM accident",
+        List<Accident> accidents = jdbcTemplate.query("SELECT accident.accidentId, accident.accidentName, accident.accidentText, accident.accidentAddress FROM accident",
                          new BeanPropertyRowMapper<>(Accident.class));
+
+        for (Accident a:accidents) {
+            a.setAccidentType(getAccidentTypeByAccidentId(a.getAccidentId()));
+            a.setRules(getRulesByAccidentId(a.getAccidentId()));
+        }
+        return accidents;
     }
 
     @Override
-    public Accident findAccidentById(int id) {
-        return jdbcTemplate.query("SELECT accident.accidentId, accident.accidentName, accident.accidentText, accident.accidentAddress SELECT accident"
-               + " WHERE accident.accidentId = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Accident.class))
+    public Accident findAccidentById(String id) {
+        int integerId = Integer.parseInt(id);
+        return jdbcTemplate.query("SELECT * FROM accident"
+               + " WHERE accident.accidentId = ?", new Object[]{integerId}, new BeanPropertyRowMapper<>(Accident.class))
                 .stream().findAny().orElse(null);
     }
+
+    @Override
+    public List<Rule> getRulesByAccidentId(int id) {
+        return jdbcTemplate.query("SELECT rules.ruleId, rules.ruleName FROM rules"
+               + " LEFT JOIN accident_rule ON accident_rule.rule_id = rules.ruleId"
+               + " WHERE accident_rule.accident_id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Rule.class));
+    }
+
+    @Override
+    public AccidentType getAccidentTypeByAccidentId(int id) {
+        return jdbcTemplate.query("SELECT types.typeId, types.typeName FROM types"
+                + " LEFT JOIN accident_type ON accident_type.type_id = types.typeId"
+                + " WHERE accident_type.accident_id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(AccidentType.class))
+                .stream().findAny().orElse(null);
+    }
+
+    @Override
+    public List<Rule> getAllRules() {
+        return  jdbcTemplate.query("SELECT rules.ruleId, rules.ruleName FROM rules",
+                new BeanPropertyRowMapper<>(Rule.class));
+    }
+
+    @Override
+    public List<AccidentType> getAllAccidentType() {
+        return  jdbcTemplate.query("SELECT types.typeId, types.typeName FROM types",
+                new BeanPropertyRowMapper<>(AccidentType.class));
+    }
+
+    @Override
+    public List<Rule> getAllRulesByIds(String[] ids) {
+        int[] numbers = Arrays.stream(ids).mapToInt(Integer::parseInt).toArray();
+        List<Integer> list = Arrays.stream(numbers).boxed().collect(Collectors.toList());
+        SqlParameterSource parameters = new MapSqlParameterSource("ids", list);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+
+
+        List<Rule> rules = namedParameterJdbcTemplate.query(
+                "SELECT * FROM rules WHERE rules.ruleId in (:ids)",
+                parameters,
+                (rs, rowNum) -> new Rule(rs.getInt("ruleid"), rs.getString("rulename"))
+        );
+        return rules;
+    }
+
+    @Override
+    public AccidentType getAccidentTypeById(String id) {
+        int integerId = Integer.parseInt(id);
+        return jdbcTemplate.query("SELECT types.typeId, types.typeName FROM types WHERE types.typeId = ?",
+        new Object[]{integerId}, new BeanPropertyRowMapper<>(AccidentType.class)).stream().findAny().orElse(null);
+    }
+
 }
