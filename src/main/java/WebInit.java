@@ -1,4 +1,4 @@
-import config.JdbcConfig;
+import config.HbmConfig;
 import config.WebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -17,7 +17,7 @@ import javax.servlet.ServletRegistration;
 public class WebInit  implements WebApplicationInitializer {
     public void onStartup(ServletContext servletCxt) {
         AnnotationConfigWebApplicationContext ac = new AnnotationConfigWebApplicationContext();
-        ac.register(WebConfig.class, JdbcConfig.class);
+        ac.register(WebConfig.class, HbmConfig.class);
         ac.refresh();
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");

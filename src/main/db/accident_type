@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS accident_type (
+type_id int REFERENCES types (typeid),
+accident_id int REFERENCES accident (accidentId),
+PRIMARY KEY (type_id, accident_id)
+);

@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS rules (
+    ruleid serial primary key,
+    rulename varchar(2000)
+);

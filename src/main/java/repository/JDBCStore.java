@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @since 27/01/21
  */
 
-@Repository
+
 public class JDBCStore implements Store {
 
     private final JdbcTemplate jdbcTemplate;

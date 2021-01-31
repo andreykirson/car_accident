@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS types (
+    typeid serial primary key,
+    typeename varchar(2000)
+);

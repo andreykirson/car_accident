@@ -1,9 +1,14 @@
 package control;
 
+import model.Accident;
+import model.AccidentType;
+import model.Rule;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import repository.JDBCStore;
+import repository.HbmStore;
+
+import java.util.List;
 
 /**
  * @author Andrey
@@ -14,15 +19,15 @@ import repository.JDBCStore;
 @Controller
 public class IndexControl {
 
-    private final JDBCStore jdbcStore;
+    private final HbmStore hbmStore;
 
-    public IndexControl(JDBCStore jdbcStore) {
-        this.jdbcStore = jdbcStore;
+    public IndexControl(HbmStore hbmStore) {
+        this.hbmStore = hbmStore;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accidents", jdbcStore.getAllAccidents());
+        model.addAttribute("accidents", hbmStore.getAllAccidents());
         return "index";
     }
 }

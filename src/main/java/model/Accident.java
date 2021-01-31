@@ -1,11 +1,16 @@
 package model;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+@Table(name = "accident")
+@Entity
 public class Accident {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accidentId;
 
     private String accidentName;
@@ -14,9 +19,21 @@ public class Accident {
 
     private String accidentAddress;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "accident_type",
+            joinColumns = @JoinColumn(name = "accident_id"),
+            inverseJoinColumns = @JoinColumn(name = "type_id")
+    )
     private AccidentType accidentType;
 
-    private List<Rule> rules;
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(
+            name = "accident_rule",
+            joinColumns = @JoinColumn(name = "accident_id"),
+            inverseJoinColumns = @JoinColumn(name = "rule_id")
+    )
+    private List<Rule> rules = new ArrayList<>();
 
     public List<Rule> getRules() {
         return rules;

@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -8,9 +9,14 @@ import java.util.Objects;
  * @since 23/1/2021
  */
 
+@Table(name = "rules")
+@Entity
 public class Rule {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ruleId;
+
     private String ruleName;
 
     public Rule() {

@@ -3,7 +3,7 @@
 <html>
 <body>
 
-<form action="<c:url value='/save?id=${accident.getAccidentId()}'/>" method='POST'>
+<form action="<c:url value='/save?accidentId=${accident.getAccidentId()}'/>" method='POST'>
     <table>
         <tr>
             <td>Name:</td>

@@ -1,4 +1,4 @@
-CREATE TABLE accident (
+CREATE TABLE IF NOT EXISTS accident (
         accidentId serial primary key,
         accidentName varchar(2000),
         accidentText varchar(2000),

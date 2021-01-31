@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import repository.JDBCStore;
+import repository.HbmStore;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 @Controller
 public class AccidentControl {
 
-    private final JDBCStore jdbcStore;
+    private final HbmStore jdbcStore;
 
-    public AccidentControl(JDBCStore jdbcStore) {
+    public AccidentControl(HbmStore jdbcStore) {
         this.jdbcStore = jdbcStore;
     }
 
@@ -39,9 +39,6 @@ public class AccidentControl {
         String typeId = req.getParameter("type.id");
         List<Rule> rules = jdbcStore.getAllRulesByIds(ruleIds);
         AccidentType accidentType = jdbcStore.getAccidentTypeById(typeId);
-        if (req.getParameter("id") != null) {
-            accident.setAccidentId(Integer.parseInt(req.getParameter("id")));
-        }
         jdbcStore.addAccident(accident, rules, accidentType);
         return "redirect:/";
     }

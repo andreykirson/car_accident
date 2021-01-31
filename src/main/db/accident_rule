@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS accident_rule (
+rule_id int REFERENCES rules (ruleid),
+accident_id int REFERENCES accident (accidentId),
+PRIMARY KEY (rule_id, accident_id)
+);
