@@ -52,4 +52,12 @@ public class AccidentType {
     public int hashCode() {
         return Objects.hash(typeId);
     }
+
+    @Override
+    public String toString() {
+        return "AccidentType{"
+                + "typeId=" + typeId
+                + ", typeName='" + typeName + '\''
+                + '}';
+    }
 }

@@ -54,4 +54,12 @@ public class Rule {
     public int hashCode() {
         return Objects.hash(ruleId);
     }
+
+    @Override
+    public String toString() {
+        return "Rule{"
+                + "ruleId=" + ruleId
+                + ", ruleName='" + ruleName + '\''
+                + '}';
+    }
 }

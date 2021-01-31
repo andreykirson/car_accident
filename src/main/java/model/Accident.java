@@ -83,4 +83,15 @@ public class Accident {
         return Objects.hash(accidentId);
     }
 
+    @Override
+    public String toString() {
+        return "Accident{"
+                + "accidentId=" + accidentId
+                + ", accidentName='" + accidentName + '\''
+                + ", accidentText='" + accidentText + '\''
+                + ", accidentAddress='" + accidentAddress + '\''
+                + ", accidentType=" + accidentType
+                + ", rules=" + rules
+                + '}';
+    }
 }

@@ -12,13 +12,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import service.Store;
-
-import javax.sound.midi.Soundbank;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +27,6 @@ import java.util.stream.Collectors;
 public class JDBCStore implements Store {
 
     private final JdbcTemplate jdbcTemplate;
-
     public JDBCStore(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -50,31 +45,27 @@ public class JDBCStore implements Store {
                 ps.setString(3, accident.getAccidentAddress());
                 return ps;
             }, keyHolder);
-
             for (Rule r:rules) {
                 jdbcTemplate.update("INSERT INTO accident_rule (accident_id, rule_id)  VALUES(?, ?)",
                         keyHolder.getKey(), r.getRuleId());
             }
-
             jdbcTemplate.update("INSERT INTO accident_type (accident_id, type_id)  VALUES(?, ?)",
                     keyHolder.getKey(), accidentType.getTypeId());
         }
-
     }
 
     @Override
     public void updateAccident(Accident accident, List<Rule> rules, AccidentType accidentType) {
         jdbcTemplate.update("UPDATE accident SET accidentName=?, accidentText=?, accidentAddress=? WHERE accidentId=?",
                 accident.getAccidentName(), accident.getAccidentText(), accident.getAccidentAddress(), accident.getAccidentId());
-
+        jdbcTemplate.update("DELETE FROM accident_rule WHERE accident_id=?",
+                accident.getAccidentId());
         for (Rule r:rules) {
-            jdbcTemplate.update("INSERT INTO accident_rule (rule_id, accident_id)  VALUES(?,?) "
-                          + " ON CONFLICT (rule_id, accident_id) DO UPDATE SET rule_id=? ",
-                    r.getRuleId(), accident.getAccidentId(), r.getRuleId());
+            jdbcTemplate.update("INSERT INTO accident_rule (accident_id, rule_id)  VALUES(?, ?)",
+                    accident.getAccidentId(), r.getRuleId());
         }
-
         jdbcTemplate.update("UPDATE accident_type SET type_id =? WHERE accident_id=?",
-                accident.getAccidentId(), accidentType.getTypeId());
+                accidentType.getTypeId(), accident.getAccidentId());
 
     }
 
@@ -82,7 +73,6 @@ public class JDBCStore implements Store {
     public List<Accident> getAllAccidents() {
         List<Accident> accidents = jdbcTemplate.query("SELECT accident.accidentId, accident.accidentName, accident.accidentText, accident.accidentAddress FROM accident",
                          new BeanPropertyRowMapper<>(Accident.class));
-
         for (Accident a:accidents) {
             a.setAccidentType(getAccidentTypeByAccidentId(a.getAccidentId()));
             a.setRules(getRulesByAccidentId(a.getAccidentId()));
@@ -131,8 +121,6 @@ public class JDBCStore implements Store {
         List<Integer> list = Arrays.stream(numbers).boxed().collect(Collectors.toList());
         SqlParameterSource parameters = new MapSqlParameterSource("ids", list);
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
-
-
         List<Rule> rules = namedParameterJdbcTemplate.query(
                 "SELECT * FROM rules WHERE rules.ruleId in (:ids)",
                 parameters,
