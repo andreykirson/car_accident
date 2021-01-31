@@ -3,6 +3,7 @@ package repository;
 import model.Accident;
 import model.AccidentType;
 import model.Rule;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import service.Store;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,25 +47,33 @@ public class JDBCStore implements Store {
                 ps.setString(3, accident.getAccidentAddress());
                 return ps;
             }, keyHolder);
-            for (Rule r:rules) {
-                jdbcTemplate.update("INSERT INTO accident_rule (accident_id, rule_id)  VALUES(?, ?)",
-                        keyHolder.getKey(), r.getRuleId());
-            }
+            batchInsertRule(rules, (Integer) keyHolder.getKey());
             jdbcTemplate.update("INSERT INTO accident_type (accident_id, type_id)  VALUES(?, ?)",
                     keyHolder.getKey(), accidentType.getTypeId());
         }
     }
 
+    public int[] batchInsertRule(List<Rule> rules, int accidentId) {
+        return this.jdbcTemplate.batchUpdate(
+                "INSERT INTO accident_rule (rule_id, accident_id)  VALUES(?, ?)",
+                new BatchPreparedStatementSetter() {
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setInt(1, rules.get(i).getRuleId());
+                        ps.setInt(2, accidentId);
+                    }
+                    public int getBatchSize() {
+                        return rules.size();
+                    }
+                });
+    }
+
+
     @Override
     public void updateAccident(Accident accident, List<Rule> rules, AccidentType accidentType) {
         jdbcTemplate.update("UPDATE accident SET accidentName=?, accidentText=?, accidentAddress=? WHERE accidentId=?",
                 accident.getAccidentName(), accident.getAccidentText(), accident.getAccidentAddress(), accident.getAccidentId());
-        jdbcTemplate.update("DELETE FROM accident_rule WHERE accident_id=?",
-                accident.getAccidentId());
-        for (Rule r:rules) {
-            jdbcTemplate.update("INSERT INTO accident_rule (accident_id, rule_id)  VALUES(?, ?)",
-                    accident.getAccidentId(), r.getRuleId());
-        }
+        jdbcTemplate.update("DELETE FROM accident_rule WHERE accident_id=?", accident.getAccidentId());
+        batchInsertRule(rules, accident.getAccidentId());
         jdbcTemplate.update("UPDATE accident_type SET type_id =? WHERE accident_id=?",
                 accidentType.getTypeId(), accident.getAccidentId());
 
