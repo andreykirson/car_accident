@@ -6,8 +6,10 @@ import model.Rule;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import repository.AccidentRepository;
 import repository.HbmStore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,15 +21,16 @@ import java.util.List;
 @Controller
 public class IndexControl {
 
-    private final HbmStore hbmStore;
+    private final AccidentRepository store;
 
-    public IndexControl(HbmStore hbmStore) {
-        this.hbmStore = hbmStore;
+    public IndexControl(AccidentRepository store) {
+        this.store = store;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accidents", hbmStore.getAllAccidents());
+        List<Accident> res = new ArrayList<>();
+        model.addAttribute("accidents", store.findAll());
         return "index";
     }
 }

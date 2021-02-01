@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 @Table(name = "accident")
 @Entity
 public class Accident {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accidentId;
+    private Integer accidentId;
 
     private String accidentName;
 
@@ -94,6 +95,7 @@ public class Accident {
         Accident accident = (Accident) o;
         return accidentId == accident.accidentId;
     }
+
 
     @Override
     public int hashCode() {
