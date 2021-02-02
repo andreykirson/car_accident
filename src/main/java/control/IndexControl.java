@@ -1,14 +1,10 @@
 package control;
 
 import model.Accident;
-import model.AccidentType;
-import model.Rule;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import repository.AccidentRepository;
-import repository.HbmStore;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +25,6 @@ public class IndexControl {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Accident> res = new ArrayList<>();
         model.addAttribute("accidents", store.findAll());
         return "index";
     }

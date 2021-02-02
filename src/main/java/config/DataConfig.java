@@ -46,7 +46,7 @@ public class DataConfig {
         vendorAdapter.setGenerateDdl(true);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("car_accident");
+        factory.setPackagesToScan("car_accident.model");
         factory.setDataSource(ds);
         return factory;
     }
