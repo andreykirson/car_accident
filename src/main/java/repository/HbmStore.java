@@ -20,7 +20,7 @@ import org.hibernate.SessionFactory;
  * @since 31/01/21
  */
 
-@Repository
+
 public class HbmStore implements Store {
 
     private final SessionFactory sf;

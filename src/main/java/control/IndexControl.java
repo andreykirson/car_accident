@@ -17,15 +17,15 @@ import java.util.List;
 @Controller
 public class IndexControl {
 
-    private final AccidentRepository store;
+    private final AccidentRepository accidentRepository;
 
     public IndexControl(AccidentRepository store) {
-        this.store = store;
+        this.accidentRepository = store;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("accidents", store.findAll());
+        model.addAttribute("accidents", accidentRepository.findAll());
         return "index";
     }
 }
