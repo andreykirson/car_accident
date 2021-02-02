@@ -1,5 +1,8 @@
 package model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ public class Accident {
 
     private String accidentAddress;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "accident_type",
@@ -28,6 +32,7 @@ public class Accident {
     )
     private AccidentType accidentType;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "accident_rule",
