@@ -1,12 +1,11 @@
 package control;
 
 import model.Accident;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import repository.AccidentRepository;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Andrey
@@ -25,6 +24,7 @@ public class IndexControl {
 
     @GetMapping("/")
     public String index(Model model) {
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("accidents", accidentRepository.findAll());
         return "index";
     }

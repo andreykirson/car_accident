@@ -1,5 +1,4 @@
 import config.DataConfig;
-import config.HbmConfig;
 import config.SecurityConfig;
 import config.WebConfig;
 import org.springframework.web.WebApplicationInitializer;
