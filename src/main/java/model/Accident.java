@@ -1,8 +1,8 @@
 package model;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class Accident {
     private String accidentAddress;
 
     @Fetch(FetchMode.JOIN)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "accident_type",
             joinColumns = @JoinColumn(name = "accident_id"),
@@ -33,7 +33,7 @@ public class Accident {
     private AccidentType accidentType;
 
     @Fetch(FetchMode.JOIN)
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "accident_rule",
             joinColumns = @JoinColumn(name = "accident_id"),
@@ -57,11 +57,11 @@ public class Accident {
         this.accidentType = accidentType;
     }
 
-    public int getAccidentId() {
+    public Integer getAccidentId() {
         return accidentId;
     }
 
-    public void setAccidentId(int accidentId) {
+    public void setAccidentId(Integer accidentId) {
         this.accidentId = accidentId;
     }
 
@@ -98,13 +98,17 @@ public class Accident {
             return false;
         }
         Accident accident = (Accident) o;
-        return accidentId == accident.accidentId;
+        return Objects.equals(accidentId, accident.accidentId)
+                && Objects.equals(accidentName, accident.accidentName)
+                && Objects.equals(accidentText, accident.accidentText)
+                && Objects.equals(accidentAddress, accident.accidentAddress)
+                && Objects.equals(accidentType, accident.accidentType)
+                && Objects.equals(rules, accident.rules);
     }
-
 
     @Override
     public int hashCode() {
-        return Objects.hash(accidentId);
+        return Objects.hash(accidentId, accidentName, accidentText, accidentAddress, accidentType, rules);
     }
 
     @Override
