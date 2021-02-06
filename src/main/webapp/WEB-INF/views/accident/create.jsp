@@ -29,7 +29,7 @@
         </tr>
 
         <tr>
-            <td>Статьи:</td>
+            <td>Items:</td>
             <td>
                 <select name="rIds" multiple>
                     <c:forEach var="rule" items="${rules}" >
@@ -39,7 +39,7 @@
         </tr>
 
         <tr>
-            <td colspan='2'><input name="submit" type="submit" value="Сохранить" /></td>
+            <td colspan='2'><input name="submit" type="submit" value="Save" /></td>
         </tr>
     </table>
 </form>

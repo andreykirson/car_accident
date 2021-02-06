@@ -10,7 +10,7 @@
 <form name='login' action="<c:url value='/login'/>" method='POST'>
     <table>
         <tr>
-            <td>UserName:</td>
+            <td>User Name:</td>
             <td><input type='text' name='username'></td>
         </tr>
         <tr>
@@ -21,7 +21,7 @@
             <td colspan='2'><input name="submit" type="submit" value="submit" /></td>
         </tr>
     </table>
-    <a href="<c:url value='/reg'/>">Регистрация</a>
+    <a href="<c:url value='/reg'/>">Registration</a>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 </form>
