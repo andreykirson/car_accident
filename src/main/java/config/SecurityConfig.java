@@ -32,25 +32,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled "
-                        + "from users "
-                        + "where username = ?")
+                .usersByUsernameQuery(" select username, password, enabled "
+                        + " from users "
+                        + " where username = ?")
                 .authoritiesByUsernameQuery(
                         " select u.username, a.authority "
-                                + "from authorities as a, users as u "
-                                + "where u.username = ? and u.authority_id = a.id");
-    }
-
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login", "/reg")
-                .permitAll();
+                                + " from authorities as a, users as u "
+                                + " where u.username = ? and u.authority_id = a.id");
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/login", "/reg")
+                .permitAll()
+                .antMatchers("/**")
+                .hasAnyRole("ADMIN", "USER")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error=true")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .permitAll()
+                .and()
+                .csrf()
+                .disable();
     }
 
 }

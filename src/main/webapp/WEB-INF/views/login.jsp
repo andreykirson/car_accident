@@ -21,7 +21,9 @@
             <td colspan='2'><input name="submit" type="submit" value="submit" /></td>
         </tr>
     </table>
+    <a href="<c:url value='/reg'/>">Регистрация</a>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
 </form>
 </body>
 </html>
